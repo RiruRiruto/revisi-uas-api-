@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manhua List</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        background-color: #252525;
+      }
+      /* modal */
+      .modal-content {
+        background-color: #161616;
+        opacity: 0.7;
+      }
+
+      .modal-content h5 {
+        color: white;
+      }
+
+      .modal-content label {
+        color: white;
+      }
+
+      p {
+        color: white;
+      }
+      
+      .manhuaContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .col {
+    width: calc(33.33% - 20px);
+    margin-bottom: 20px;
+  }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar" style="background-color: #2c2c2c">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="https://cdn.discordapp.com/attachments/821763703183638528/1122886051334209678/logo.png" alt="Logo" width="190" height="40" />
+        </a>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button
+              type="button"
+              class="button"
+              data-bs-toggle="modal"
+              data-bs-target="#createModal"
+            >
+              Add
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- navv -->
+    <div class="container py-4">
+      <h1 class="mb-4">Manhua List</h1>
+
+      <!-- Form Tambah manhua -->
+
+<!-- Daftar hasil pencarian -->
+<ul id="searchResults"></ul>
+      <!-- Daftar manhua -->
+      <div>
+        <h2 style="color: white">Daftar Manhua</h2>
+        <ul id="manhuas" class="list-group"></ul>
+      </div>
+    </div>
+    <div id="manhuas" class="row row-cols-1 row-cols-md-3 g-4"></div>
+
+    <!-- Modal Show Manhua -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="viewModal"
+      tabindex="-1"
+      aria-labelledby="viewModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewModalLabel">Detail Manhua</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <img src="" id="modalImage" width="250" alt="Manhua Image" />
+            <h5 id="modalTitle"></h5>
+            <p id="modalAuthor"></p>
+            <p id="modalSynopsis"></p>
+            <p id="modalGenre"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary mb-2 edit-btn"
+              data-bs-toggle="modal"
+              data-bs-target="#editModal"
+              id="editBtn"
+            >
+              Edit manhua
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger mb-2 edit-btn"
+              data-key=""
+              id="hapusBtn"
+            >
+              Hapus Manhua
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Manhua -->
+    <div
+      class="modal fade"
+      id="createModal"
+      tabindex="-1"
+      aria-labelledby="createModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createModalLabel">Tambah Manhua</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="createForm">
+              <div class="mb-3">
+                <label for="judul" class="form-label">Judul</label>
+                <input type="text" class="form-control" id="judul" required />
+              </div>
+              <div class="mb-3">
+                <label for="pengarang" class="form-label">Pengarang</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="pengarang"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="sinopsis" class="form-label">Sinopsis</label>
+                <textarea
+                  class="form-control"
+                  id="sinopsis"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="genre" class="form-label">Genre</label>
+                <input type="text" class="form-control" id="genre" required />
+              </div>
+              <div class="mb-3">
+                <label for="gambar" class="form-label">URL Gambar</label>
+                <input type="text" class="form-control" id="gambar" required />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="createBtn">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Edit Manhua -->
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Edit manhua</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="edit-key" />
+            <div class="mb-3">
+              <div id="gambar-preview"></div>
+            </div>
+            <div class="mb-3">
+              <label for="edit-gambar" class="form-label">Gambar</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-gambar"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="edit-judul" class="form-label">Judul</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-judul"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="edit-pengarang" class="form-label">Pengarang</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-pengarang"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="edit-sinopsis" class="form-label">Sinopsis</label>
+              <textarea
+                class="form-control"
+                id="edit-sinopsis"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="edit-genre" class="form-label">Genre</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-genre"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              id="updateBtn"
+              class="btn btn-primary"
+              type="submit"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script type="module">
+      // Inisialisasi Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyCBR4mnBrNrivZmcWrFp8nGnxgMsrJFMcs",
+        authDomain: "riza-uas.firebaseapp.com",
+        databaseURL: "https://riza-uas-default-rtdb.firebaseio.com",
+        projectId: "riza-uas",
+        storageBucket: "riza-uas.appspot.com",
+        messagingSenderId: "423572043916",
+        appId: "1:423572043916:web:19489e02de03bd775763a9",
+        measurementId: "G-Q7VDE7PJ9W",
+      };
+
+      $(document).ready(function () {
+        firebase.initializeApp(firebaseConfig);
+
+        // Mendapatkan referensi database
+        const database = firebase.database();
+
+        // READ
+        database.ref("manhua").on("value", function (snapshot) {
+          snapshot.forEach(function (childSnapshot) {
+            let manhua = childSnapshot.val();
+
+            $("#manhuas").append(
+              `>
+              <div class="col">
+                <div class="manhuaContainer">
+            <div class="card bg-dark text-white">
+              <a href="#" data-key="${childSnapshot.key}" data-bs-toggle="modal" data-bs-target="#viewModal" onclick="showManhuaDetails('${childSnapshot.key}')">
+        <img src="${manhua.gambar}" class="card-img-top" alt="${manhua.judul}" data-key="${childSnapshot.key}">
+      </a>
+              <div class="card-body">
+                <h5 class="card-title">${manhua.judul}</h5>
+              </div>
+            </div>
+          </div>
+          </div>
+                    `
+            );
+          });
+
+          // Memasang event listener untuk tombol edit setelah menambahkan data
+          $(".edit-btn").click(function (event) {
+            let key = $(this).data("key");
+            editData(key);
+          });
+
+          // Memasang event listener untuk tombol delete setelah menambahkan data
+          $("#hapusBtn").click(function () {
+            var key = $(this).data("key");
+            deleteData(key);
+          });
+
+          $("#manhuas").on("click", "img", function () {
+            let key = $(this).data("key");
+            $("#viewModal .modal-footer #hapusBtn").attr("data-key", key);
+            showManhuaDetails(key);
+          });
+        });
+
+        // Create
+        $("#addmanhuaForm button[type='submit']").click(function (event) {
+          event.preventDefault();
+
+          let gambar = $("#popup-gambar").val();
+          let judul = $("#popup-judul").val();
+          let pengarang = $("#popup-pengarang").val();
+          let sinopsis = $("#popup-sinopsis").val();
+          let genre = $("#popup-genre").val();
+
+          let data = {
+            gambar: gambar,
+            judul: judul,
+            pengarang: pengarang,
+            sinopsis: sinopsis,
+            genre: genre,
+          };
+
+          // Mengirim data ke Firebase
+          database.ref("manhua").push(data, function (error) {
+            if (error) {
+              alert("Terjadi kesalahan saat menambahkan data!");
+              console.log(error);
+            } else {
+              // Menutup modal tambah
+              $("#addModal").modal("hide");
+              // Mengosongkan nilai input
+              $("#popup-gambar").val("");
+              $("#popup-judul").val("");
+              $("#popup-pengarang").val("");
+              $("#popup-sinopsis").val("");
+              $("#popup-genre").val("");
+            }
+          });
+        });
+
+        function showManhuaDetails(key) {
+          $.ajax({
+            url:
+              "https://riza-uas-default-rtdb.firebaseio.com/manhua/" +
+              key +
+              ".json",
+            method: "GET",
+            success: function (data) {
+              let editBtn = document.getElementById("editBtn");
+
+              // Mengatur nilai data-key pada elemen button
+              editBtn.setAttribute("data-key", key);
+              // Mengisi nilai elemen HTML dengan data dari Firebase
+              $("#modalImage").attr("src", data.gambar);
+              $("#modalTitle").text(data.judul);
+              $("#modalAuthor").text("Pengarang: " + data.pengarang);
+              $("#modalSynopsis").text("Sinopsis: " + data.sinopsis);
+              $("#modalGenre").text("Genre: " + data.genre);
+
+              // Menampilkan modal
+              $("#viewModal").modal("show");
+            },
+            error: function (error) {
+              alert("Terjadi kesalahan saat mengambil data manhua!");
+              console.log(error);
+            },
+          });
+        }
+
+        // Fungsi untuk mengambil data manhua dari Firebase dan mengisi form edit
+        function editData(key) {
+          // Membuat panggilan Ajax untuk mengambil data dari Firebase
+          $.ajax({
+            url:
+              "https://riza-uas-default-rtdb.firebaseio.com/manhua/" +
+              key +
+              ".json",
+            method: "GET",
+            success: function (data) {
+              // Mengisi form edit dengan data yang diterima
+              $("#edit-key").val(key);
+              $("#edit-gambar").val(data.gambar);
+              $("#gambar-preview").html(
+                `<img src="${data.gambar}" alt="Pratinjau Gambar" style="max-width: 200px;">`
+              );
+              $("#edit-judul").val(data.judul);
+              $("#edit-pengarang").val(data.pengarang);
+              $("#edit-sinopsis").val(data.sinopsis);
+              $("#edit-genre").val(data.genre);
+
+              // Menampilkan modal edit
+              $("#editModal").modal("show");
+            },
+            error: function (error) {
+              alert("Terjadi kesalahan saat mengambil data manhua!");
+              console.log(error);
+            },
+          });
+        }
+
+        // Fungsi untuk menghapus data manhua dari Firebase
+        function deleteData(key) {
+          // Menghapus data dari Firebase
+          database.ref("manhua/" + key).remove(function (error) {
+            if (error) {
+              alert("Terjadi kesalahan saat menghapus manhua!");
+              console.log(error);
+            } else {
+              // Tutup modal hapus
+              $("#hapusModal").modal("hide");
+              // Refresh halaman untuk menampilkan data terbaru
+              location.reload();
+            }
+          });
+        }
+        // Fungsi untuk mengirim data manhua yang diubah ke Firebase
+        $("#updateBtn").click(function (event) {
+          event.preventDefault();
+
+          // Ambil nilai input dari formulir edit
+          let key = $("#edit-key").val();
+          let gambar = $("#edit-gambar").val();
+          let judul = $("#edit-judul").val();
+          let pengarang = $("#edit-pengarang").val();
+          let sinopsis = $("#edit-sinopsis").val();
+          let genre = $("#edit-genre").val();
+
+          // Buat objek data
+          let data = {
+            gambar: gambar,
+            judul: judul,
+            pengarang: pengarang,
+            sinopsis: sinopsis,
+            genre: genre,
+          };
+
+          // Update data di Firebase
+          database.ref("manhua/" + key).update(data, function (error) {
+            if (error) {
+              alert("Terjadi kesalahan saat mengupdate manhua!");
+              console.log(error);
+            } else {
+              // Tutup modal edit
+              $("#editModal").modal("hide");
+              // Refresh halaman untuk menampilkan data terbaru
+              location.reload();
+            }
+          });
+        });
+      });
+
+      $("#createBtn").click(function () {
+        // Mengambil nilai input dari form
+        var gambar = $("#gambar").val();
+        var judul = $("#judul").val();
+        var pengarang = $("#pengarang").val();
+        var sinopsis = $("#sinopsis").val();
+        var genre = $("#genre").val();
+
+        // Membuat objek data untuk ditambahkan ke Firebase
+        var data = {
+          gambar: gambar,
+          judul: judul,
+          pengarang: pengarang,
+          sinopsis: sinopsis,
+          genre: genre,
+        };
+
+        // Mengirim data ke Firebase menggunakan metode POST
+        $.ajax({
+          url: "https://riza-uas-default-rtdb.firebaseio.com/manhua.json/",
+          type: "POST",
+          data: JSON.stringify(data),
+          success: function (response) {
+            // Menutup modal
+            $("#createModal").modal("hide");
+
+            // Mengosongkan input form
+            $("#createForm")[0].reset();
+
+            // Refresh halaman untuk menampilkan data terbaru
+            location.reload();
+          },
+          error: function (xhr, status, error) {
+            // Terjadi kesalahan dalam penambahan data
+            alert(
+              "Terjadi kesalahan saat menambahkan Manhua. Silakan coba lagi!"
+            );
+            console.log(error);
+          },
+        });
+      });
+
+      
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+      integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+      crossorigin="anonymous"
+    ></script>
+
+  </body>
+</html>

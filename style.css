@@ -1,0 +1,77 @@
+@font-face {
+  font-family: Prociono;
+  src: url(https://fonts.google.com/specimen/Prociono);
+}
+
+/* nav */
+.navbar a {
+  color: aliceblue;
+}
+.nav-item .button {
+  background-color: transparent;
+  border: none;
+  color: aliceblue;
+}
+/* nav */
+
+/* src */
+
+#src {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+}
+
+#src form {
+  justify-content: center;
+  outline: none;
+}
+
+#src form input {
+  background-color: #616161;
+  color: aliceblue;
+  border: none;
+}
+
+#src h3 {
+  color: aliceblue;
+  font-family: Prociono;
+  font-size: 30px;
+}
+
+.container .container-fluid .form-control {
+  width: 500px;
+}
+
+/* card */
+#manhuaContainer {
+  margin-top: 3%;
+  display: flex;
+    flex-wrap: wrap;
+    display: none;
+}
+
+.card {
+  background-color: transparent;
+  border: none;
+  flex-basis: calc(33.33% - 20px);
+  flex-grow: 1;
+  margin: 10px;
+  display: none;
+}
+
+.card img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+
+.card h5 {
+  display: flex;
+  justify-content: center;
+  color: whitesmoke;
+  font-family: Prociono;
+  font-size: 25px;
+}
